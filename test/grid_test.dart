@@ -53,28 +53,62 @@ void main() {
       expect(triangle(2.5), 0.25);
     });
 
-    final grid = Grid.hexagonal(
-      9,
-      zero: Point(2.3, 2.65),
-      size: Point(5.5, 3.4),
-    );
+    group('Horizontal', () {
+      final grid = Grid.hexagonal(
+        9,
+        horizontal: true,
+        zero: Point(2.3, 2.65),
+        size: Point(5.5, 3.4),
+      );
 
-    test('Bijective Conversion', () {
-      for (var p in points) {
-        expect(grid.worldToGridSpace(grid.gridToWorldSpace(p)), matchPoint(p));
-        expect(grid.gridToWorldSpace(grid.worldToGridSpace(p)), matchPoint(p));
-      }
+      test('Bijective Conversion', () {
+        for (var p in points) {
+          expect(
+              grid.worldToGridSpace(grid.gridToWorldSpace(p)), matchPoint(p));
+          expect(
+              grid.gridToWorldSpace(grid.worldToGridSpace(p)), matchPoint(p));
+        }
+      });
+
+      test('Transform', () {
+        expect(
+            points.map((p) => grid.gridToWorldSpace(p)),
+            matchPoints([
+              grid.zero,
+              grid.zero + Point(grid.tileSize, 0.5 * grid.tileSize),
+              grid.zero + Point(grid.tileSize, 1.5 * grid.tileSize),
+              grid.zero + Point(0, grid.tileSize),
+            ]));
+      });
     });
 
-    test('Transform', () {
-      expect(
-          points.map((p) => grid.gridToWorldSpace(p)),
-          matchPoints([
-            grid.zero,
-            grid.zero + Point(grid.tileSize, 0.5 * grid.tileSize),
-            grid.zero + Point(grid.tileSize, 1.5 * grid.tileSize),
-            grid.zero + Point(0, grid.tileSize),
-          ]));
+    group('Vertical', () {
+      final grid = Grid.hexagonal(
+        9,
+        horizontal: false,
+        zero: Point(2.3, 2.65),
+        size: Point(5.5, 3.4),
+      );
+
+      test('Bijective Conversion', () {
+        for (var p in points) {
+          expect(
+              grid.worldToGridSpace(grid.gridToWorldSpace(p)), matchPoint(p));
+          expect(
+              grid.gridToWorldSpace(grid.worldToGridSpace(p)), matchPoint(p));
+        }
+      });
+
+      test('Transform', () {
+        expect(
+            points.map((p) => grid.gridToWorldSpace(p)),
+            matchPoints([
+              grid.zero,
+              grid.zero + Point(grid.tileSize, 0),
+              grid.zero + Point(1.5 * grid.tileSize, grid.tileSize),
+              grid.zero + Point(0.5 * grid.tileSize, grid.tileSize),
+            ]));
+      });
     });
   });
 }
