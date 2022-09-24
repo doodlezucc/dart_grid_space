@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'hex_grid.dart';
 import 'square_grid.dart';
 
 abstract class Grid<U extends num> {
@@ -17,19 +18,26 @@ abstract class Grid<U extends num> {
   }) =>
       SquareGrid(tilesInRow, zero: zero, size: size);
 
+  static HexagonalGrid<U> hexagonal<U extends num>(
+    int tilesInRow, {
+    bool horizontal = true,
+    Point<U>? zero,
+    Point<U>? size,
+  }) =>
+      HexagonalGrid(tilesInRow, horizontal: horizontal, zero: zero, size: size);
+
   Point gridToWorldSpace(Point<U> gridPos);
   Point worldToGridSpace(Point<U> worldPos);
 }
 
 abstract class TiledGrid<U extends num> extends Grid<U> {
-  final Tile tileShape;
   int tilesInRow;
+  double get tileSize => size.x / tilesInRow;
 
-  double get tileWidth => size.x / tilesInRow;
+  Tile get tileShape;
 
   TiledGrid(
     this.tilesInRow, {
-    required this.tileShape,
     Point<U>? zero,
     Point<U>? size,
   }) : super(zero: zero, size: size);
@@ -39,8 +47,6 @@ abstract class Tile {
   final List<Point> points;
 
   const Tile(this.points);
-
-  Point getTilePosition(Point<int> pos);
 }
 
 Point<U> pnt<U extends num>(Point p) {
