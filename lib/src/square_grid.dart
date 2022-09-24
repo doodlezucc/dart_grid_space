@@ -28,7 +28,4 @@ class SquareTile extends Tile {
           Point(1, 1),
           Point(0, 1),
         ]);
-
-  @override
-  Point<int> getTilePosition(Point<int> pos) => pos;
 }
