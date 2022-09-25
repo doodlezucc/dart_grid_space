@@ -14,7 +14,7 @@ void main() {
   test('Tile Width', () {
     final grid = Grid.square(4, zero: Point(0.5, 0.5), size: Point(2, 3));
     expect(grid.tilesInRow, 4);
-    expect(grid.tileSize, 0.5);
+    expect(grid.tileWidth, 0.5);
   });
 
   group('Square', () {
@@ -36,9 +36,9 @@ void main() {
           points.map((p) => grid.gridToWorldSpace(p)),
           matchPoints([
             grid.zero,
-            grid.zero + Point(grid.tileSize, 0),
-            grid.zero + Point(grid.tileSize, grid.tileSize),
-            grid.zero + Point(0, grid.tileSize),
+            grid.zero + Point(grid.tileWidth, 0),
+            grid.zero + Point(grid.tileWidth, grid.tileWidth),
+            grid.zero + Point(0, grid.tileWidth),
           ]));
     });
   });
@@ -75,9 +75,9 @@ void main() {
             points.map((p) => grid.gridToWorldSpace(p)),
             matchPoints([
               grid.zero,
-              grid.zero + Point(grid.tileSize, 0.5 * grid.tileSize),
-              grid.zero + Point(grid.tileSize, 1.5 * grid.tileSize),
-              grid.zero + Point(0, grid.tileSize),
+              grid.zero + Point(grid.tileWidth, 0.5 * grid.tileHeight),
+              grid.zero + Point(grid.tileWidth, 1.5 * grid.tileHeight),
+              grid.zero + Point(0, grid.tileHeight),
             ]));
       });
     });
@@ -104,9 +104,9 @@ void main() {
             points.map((p) => grid.gridToWorldSpace(p)),
             matchPoints([
               grid.zero,
-              grid.zero + Point(grid.tileSize, 0),
-              grid.zero + Point(1.5 * grid.tileSize, grid.tileSize),
-              grid.zero + Point(0.5 * grid.tileSize, grid.tileSize),
+              grid.zero + Point(grid.tileWidth, 0),
+              grid.zero + Point(1.5 * grid.tileWidth, grid.tileHeight),
+              grid.zero + Point(0.5 * grid.tileWidth, grid.tileHeight),
             ]));
       });
     });
@@ -119,7 +119,7 @@ Matcher matchPoints(List<Point> points) {
 
 Matcher matchPoint(Point p, {double maxDistance = 0.001}) {
   return isA<Point>().having(
-      (q) => pnt<double>(q).squaredDistanceTo(pnt<double>(p)),
+      (q) => q.cast<double>().squaredDistanceTo(p.cast<double>()),
       'Distance',
       lessThanOrEqualTo(maxDistance * maxDistance));
 }

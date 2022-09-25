@@ -2,9 +2,13 @@ import 'dart:math';
 
 import 'grid_base.dart';
 
-const _invSqrt3 = 0.57735026918962576450; // 1/√3
+const _oneThird = 0.33333333333333333333; // 1 / 3
+const _invSqrt3 = 0.57735026918962576450; // 1 / √3
+const _halfInv3 = _invSqrt3 / 2; // 1/(2*√3)
+const _vertDisH = _invSqrt3 * 2;
+const _vertDisV = 0.86602540378443864676; // √3 / 2
 
-/// A triangle wave function that linearly goes from 0 to 0.5 to 0
+/// A triangle wave function that linearly goes from 0 to 1 to 0
 /// in a period of 2 units.
 double triangle(num x) {
   final mod = x % 2.0;
@@ -17,6 +21,9 @@ double triangle(num x) {
 class HexagonalGrid<U extends num> extends TiledGrid<U> {
   bool horizontal;
 
+  @override
+  double get tileHeight => tileWidth * (horizontal ? _vertDisH : _vertDisV);
+
   HexagonalGrid(
     int tilesInRow, {
     this.horizontal = true,
@@ -26,16 +33,20 @@ class HexagonalGrid<U extends num> extends TiledGrid<U> {
 
   @override
   Point<double> gridToWorldSpace(Point<num> gridPos) {
-    var p = pnt<double>(gridPos);
+    var p = gridPos.cast<double>();
     p += horizontal
         ? Point(0, triangle(gridPos.x))
         : Point(triangle(gridPos.y), 0);
-    return pnt<double>(zero) + p * tileSize;
+
+    return zero.cast<double>() + Point(p.x * tileWidth, p.y * tileHeight);
   }
 
   @override
   Point<double> worldToGridSpace(Point<num> worldPos) {
-    var sq = (pnt<double>(worldPos) - pnt<double>(zero)) * (1 / tileSize);
+    var sq = Point(
+      (worldPos.x - zero.x) / tileWidth,
+      (worldPos.y - zero.y) / tileHeight,
+    );
     sq -= horizontal ? Point(0, triangle(sq.x)) : Point(triangle(sq.y), 0);
     return sq;
   }
@@ -49,20 +60,20 @@ class HexagonTile extends Tile {
   const HexagonTile._(bool horizontal)
       : super(horizontal
             ? const [
-                Point(-_invSqrt3, 1),
-                Point(_invSqrt3, 1),
-                Point(2 * _invSqrt3, 0),
-                Point(_invSqrt3, -1),
-                Point(-_invSqrt3, -1),
-                Point(-2 * _invSqrt3, 0),
+                Point(-_oneThird, _invSqrt3),
+                Point(_oneThird, _invSqrt3),
+                Point(2 * _oneThird, 0),
+                Point(_oneThird, -_invSqrt3),
+                Point(-_oneThird, -_invSqrt3),
+                Point(-2 * _oneThird, 0),
               ]
             : const [
-                Point(1, -_invSqrt3),
-                Point(1, _invSqrt3),
-                Point(0, 2 * _invSqrt3),
-                Point(-1, _invSqrt3),
-                Point(-1, -_invSqrt3),
-                Point(0, -2 * _invSqrt3),
+                Point(0.5, -_halfInv3),
+                Point(0.5, _halfInv3),
+                Point(0, 2 * _halfInv3),
+                Point(-0.5, _halfInv3),
+                Point(-0.5, -_halfInv3),
+                Point(0, -2 * _halfInv3),
               ]);
 
   static const horizontal = HexagonTile._(true);
