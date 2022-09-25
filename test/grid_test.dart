@@ -12,10 +12,16 @@ void main() {
     Point(-0.5, -1.5),
   ];
 
-  test('Tile Width', () {
-    final grid = Grid.square(4, zero: Point(0.5, 0.5), size: Point(2, 3));
-    expect(grid.tilesInRow, 4);
-    expect(grid.tileWidth, 0.5);
+  group('Utils', () {
+    test('Point Rounding', () {
+      expect(Point(-1.7, 1.3).round(), matchPoint(Point(-2, 1)));
+    });
+
+    test('Tile Width', () {
+      final grid = Grid.square(4, zero: Point(0.5, 0.5), size: Point(2, 3));
+      expect(grid.tilesInRow, 4);
+      expect(grid.tileWidth, 0.5);
+    });
   });
 
   group('Unclamped', () {

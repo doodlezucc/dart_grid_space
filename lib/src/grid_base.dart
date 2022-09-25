@@ -35,6 +35,10 @@ abstract class Grid<U extends num> {
 
   Point gridToWorldSpace(Point gridPos);
   Point worldToGridSpace(Point worldPos);
+
+  Point<int> worldToGridSpaceSnapped(Point worldPos) {
+    return worldToGridSpace(worldPos).round();
+  }
 }
 
 abstract class TiledGrid<U extends num> extends Grid<U> {
@@ -68,5 +72,9 @@ extension NumExtension on num {
 extension PointExtension<P extends num> on Point<P> {
   Point<U> cast<U extends num>() {
     return Point(x.cast<U>(), y.cast<U>());
+  }
+
+  Point<int> round() {
+    return Point(x.round(), y.round());
   }
 }
