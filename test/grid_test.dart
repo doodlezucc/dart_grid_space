@@ -9,6 +9,7 @@ void main() {
     Point(1, 0),
     Point(1, 1),
     Point(0, 1),
+    Point(-0.5, -1.5),
   ];
 
   test('Tile Width', () {
@@ -17,11 +18,10 @@ void main() {
     expect(grid.tileWidth, 0.5);
   });
 
-  group('Square', () {
-    final grid = Grid.square(
-      9,
+  group('Unclamped', () {
+    final grid = Grid.unclamped(
+      scale: 2.5,
       zero: Point(2.3, 2.65),
-      size: Point(5.5, 3.4),
     );
 
     test('Bijective Conversion', () {
@@ -36,9 +36,41 @@ void main() {
           points.map((p) => grid.gridToWorldSpace(p)),
           matchPoints([
             grid.zero,
+            grid.zero + Point(grid.scale, 0),
+            grid.zero + Point(grid.scale, grid.scale),
+            grid.zero + Point(0, grid.scale),
+            grid.zero + Point(-0.5 * grid.scale, -1.5 * grid.scale),
+          ]));
+    });
+  });
+
+  group('Square', () {
+    final grid = Grid.square(
+      9,
+      zero: Point(2.3, 2.65),
+      size: Point(5.5, 3.4),
+    );
+
+    test('Tile Size', () {
+      expect(grid.tileWidth, grid.tileHeight);
+    });
+
+    test('Bijective Conversion', () {
+      for (var p in points) {
+        expect(grid.worldToGridSpace(grid.gridToWorldSpace(p)), matchPoint(p));
+        expect(grid.gridToWorldSpace(grid.worldToGridSpace(p)), matchPoint(p));
+      }
+    });
+
+    test('Transform', () {
+      expect(
+          points.map((p) => grid.gridToWorldSpace(p)),
+          matchPoints([
+            grid.zero,
             grid.zero + Point(grid.tileWidth, 0),
-            grid.zero + Point(grid.tileWidth, grid.tileWidth),
-            grid.zero + Point(0, grid.tileWidth),
+            grid.zero + Point(grid.tileWidth, grid.tileHeight),
+            grid.zero + Point(0, grid.tileHeight),
+            grid.zero + Point(-0.5 * grid.tileWidth, -1.5 * grid.tileHeight),
           ]));
     });
   });
@@ -78,6 +110,7 @@ void main() {
               grid.zero + Point(grid.tileWidth, 0.5 * grid.tileHeight),
               grid.zero + Point(grid.tileWidth, 1.5 * grid.tileHeight),
               grid.zero + Point(0, grid.tileHeight),
+              grid.zero + Point(-0.5 * grid.tileWidth, -1.25 * grid.tileHeight),
             ]));
       });
     });
@@ -107,6 +140,7 @@ void main() {
               grid.zero + Point(grid.tileWidth, 0),
               grid.zero + Point(1.5 * grid.tileWidth, grid.tileHeight),
               grid.zero + Point(0.5 * grid.tileWidth, grid.tileHeight),
+              grid.zero + Point(-0.25 * grid.tileWidth, -1.5 * grid.tileHeight),
             ]));
       });
     });

@@ -8,12 +8,12 @@ class SquareGrid<U extends num> extends TiledGrid<U> {
 
   @override
   Point gridToWorldSpace(Point gridPos) {
-    return zero.cast<double>() + gridPos.cast<double>() * tileWidth;
+    return zero.cast<num>() + gridPos.cast<num>() * tileWidth;
   }
 
   @override
   Point worldToGridSpace(Point worldPos) {
-    return (worldPos.cast<double>() - zero.cast<double>()) * (1 / tileWidth);
+    return (worldPos.cast<num>() - zero.cast<num>()) * (1 / tileWidth);
   }
 
   @override

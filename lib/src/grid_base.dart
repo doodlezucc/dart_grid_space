@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'hex_grid.dart';
+import 'no_grid.dart';
 import 'square_grid.dart';
 
 abstract class Grid<U extends num> {
@@ -8,8 +9,14 @@ abstract class Grid<U extends num> {
   Point<U> size;
 
   Grid({Point<U>? zero, Point<U>? size})
-      : zero = zero ?? Point(0 as U, 0 as U),
-        size = size ?? Point(1 as U, 1 as U);
+      : zero = zero ?? Point(0.cast(), 0.cast()),
+        size = size ?? Point(1.cast(), 1.cast());
+
+  static UnclampedGrid<U> unclamped<U extends num>({
+    double scale = 1,
+    Point<U>? zero,
+  }) =>
+      UnclampedGrid(scale: scale);
 
   static SquareGrid<U> square<U extends num>(
     int tilesInRow, {
@@ -26,8 +33,8 @@ abstract class Grid<U extends num> {
   }) =>
       HexagonalGrid(tilesInRow, horizontal: horizontal, zero: zero, size: size);
 
-  Point gridToWorldSpace(Point<U> gridPos);
-  Point worldToGridSpace(Point<U> worldPos);
+  Point gridToWorldSpace(Point gridPos);
+  Point worldToGridSpace(Point worldPos);
 }
 
 abstract class TiledGrid<U extends num> extends Grid<U> {
@@ -50,16 +57,16 @@ abstract class Tile {
   const Tile(this.points);
 }
 
+extension NumExtension on num {
+  U cast<U extends num>() {
+    if (U == int) return toInt() as U;
+    if (U == double) return toDouble() as U;
+    return this as U;
+  }
+}
+
 extension PointExtension<P extends num> on Point<P> {
   Point<U> cast<U extends num>() {
-    if (U == int) return Point(x.toInt() as U, y.toInt() as U);
-
-    if (U == double) return Point(x.toDouble() as U, y.toDouble() as U);
-
-    return Point(x as U, y as U);
-  }
-
-  Point<T> sc<T extends num>(T Function(P v) scale) {
-    return Point(scale(x), scale(y));
+    return Point(x.cast<U>(), y.cast<U>());
   }
 }
