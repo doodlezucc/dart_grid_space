@@ -61,12 +61,12 @@ class HexagonTile extends Tile {
   const HexagonTile._(bool horizontal)
       : super(horizontal
             ? const [
-                Point(0.5 - _oneThird, 0.5 + _invSqrt3),
-                Point(0.5 + _oneThird, 0.5 + _invSqrt3),
-                Point(0.5 + 2 * _oneThird, 0.5),
-                Point(0.5 + _oneThird, 0.5 - _invSqrt3),
-                Point(0.5 - _oneThird, 0.5 - _invSqrt3),
-                Point(0.5 - 2 * _oneThird, 0.5),
+                Point(0.5 - _oneThird, 2 * _invSqrt3),
+                Point(0.5 + _oneThird, 2 * _invSqrt3),
+                Point(0.5 + 2 * _oneThird, _invSqrt3),
+                Point(0.5 + _oneThird, 0),
+                Point(0.5 - _oneThird, 0),
+                Point(0.5 - 2 * _oneThird, _invSqrt3),
               ]
             : const [
                 Point(1, 0.5 - _halfInv3),
