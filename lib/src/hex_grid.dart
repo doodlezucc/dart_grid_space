@@ -3,19 +3,20 @@ import 'dart:math';
 import 'grid_base.dart';
 
 const _oneThird = 0.33333333333333333333; // 1 / 3
+const _oneSixth = _oneThird / 2; // 1 / 6
 const _invSqrt3 = 0.57735026918962576450; // 1 / √3
 const _halfInv3 = _invSqrt3 / 2; // 1/(2*√3)
 const _vertDisH = _invSqrt3 * 2;
 const _vertDisV = 0.86602540378443864676; // √3 / 2
 
-/// A triangle wave function that linearly goes from 0 to 1 to 0
-/// in a period of 2 units.
-double triangle(num x) {
-  final mod = x % 2.0;
-  if (mod > 1) {
-    return 1 - 0.5 * mod;
-  }
-  return 0.5 * mod;
+/// A hexagon outline wave function spanning a period of 2 units.
+double hexOffset(num x) {
+  final mod = ((x + _oneSixth) % 2.0);
+  if (mod < _oneThird) return 0.5 - mod * 1.5;
+  if (mod < 1) return 0;
+  if (mod < 1 + _oneThird) return (mod - 1) * 1.5;
+
+  return 0.5;
 }
 
 class HexagonalGrid<U extends num> extends TiledGrid<U> {
@@ -35,8 +36,8 @@ class HexagonalGrid<U extends num> extends TiledGrid<U> {
   Point<double> gridToWorldSpace(Point<num> gridPos) {
     var p = gridPos.cast<double>();
     p += horizontal
-        ? Point(0, triangle(gridPos.x))
-        : Point(triangle(gridPos.y), 0);
+        ? Point(0, hexOffset(gridPos.x))
+        : Point(hexOffset(gridPos.y), 0);
 
     return zero.cast<double>() + Point(p.x * tileWidth, p.y * tileHeight);
   }
@@ -47,7 +48,7 @@ class HexagonalGrid<U extends num> extends TiledGrid<U> {
       (worldPos.x - zero.x) / tileWidth,
       (worldPos.y - zero.y) / tileHeight,
     );
-    sq -= horizontal ? Point(0, triangle(sq.x)) : Point(triangle(sq.y), 0);
+    sq -= horizontal ? Point(0, hexOffset(sq.x)) : Point(hexOffset(sq.y), 0);
     return sq;
   }
 

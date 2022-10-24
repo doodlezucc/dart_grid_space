@@ -9,6 +9,7 @@ void main() {
     Point(1, 0),
     Point(1, 1),
     Point(0, 1),
+    Point(0.5, 0.5),
     Point(-0.5, -1.5),
   ];
 
@@ -45,6 +46,7 @@ void main() {
             grid.zero + Point(grid.scale, 0),
             grid.zero + Point(grid.scale, grid.scale),
             grid.zero + Point(0, grid.scale),
+            grid.zero + Point(0.5 * grid.scale, 0.5 * grid.scale),
             grid.zero + Point(-0.5 * grid.scale, -1.5 * grid.scale),
           ]));
     });
@@ -76,19 +78,20 @@ void main() {
             grid.zero + Point(grid.tileWidth, 0),
             grid.zero + Point(grid.tileWidth, grid.tileHeight),
             grid.zero + Point(0, grid.tileHeight),
+            grid.zero + Point(0.5 * grid.tileWidth, 0.5 * grid.tileHeight),
             grid.zero + Point(-0.5 * grid.tileWidth, -1.5 * grid.tileHeight),
           ]));
     });
   });
 
   group('Hexagon', () {
-    test('Triangle Wave Function', () {
-      expect(triangle(0), 0);
-      expect(triangle(0.5), 0.25);
-      expect(triangle(1), 0.5);
-      expect(triangle(1.5), 0.25);
-      expect(triangle(2), 0);
-      expect(triangle(2.5), 0.25);
+    test('Wave Function', () {
+      expect(hexOffset(0), closeTo(0.25));
+      expect(hexOffset(0.5), closeTo(0));
+      expect(hexOffset(1), closeTo(0.25));
+      expect(hexOffset(1.5), closeTo(0.5));
+      expect(hexOffset(2), closeTo(0.25));
+      expect(hexOffset(2.5), closeTo(0));
     });
 
     group('Horizontal', () {
@@ -112,11 +115,12 @@ void main() {
         expect(
             points.map((p) => grid.gridToWorldSpace(p)),
             matchPoints([
-              grid.zero,
-              grid.zero + Point(grid.tileWidth, 0.5 * grid.tileHeight),
-              grid.zero + Point(grid.tileWidth, 1.5 * grid.tileHeight),
-              grid.zero + Point(0, grid.tileHeight),
-              grid.zero + Point(-0.5 * grid.tileWidth, -1.25 * grid.tileHeight),
+              grid.zero + Point(0, 0.25 * grid.tileHeight),
+              grid.zero + Point(grid.tileWidth, 0.25 * grid.tileHeight),
+              grid.zero + Point(grid.tileWidth, 1.25 * grid.tileHeight),
+              grid.zero + Point(0, 1.25 * grid.tileHeight),
+              grid.zero + Point(0.5 * grid.tileWidth, 0.5 * grid.tileHeight),
+              grid.zero + Point(-0.5 * grid.tileWidth, -grid.tileHeight),
             ]));
       });
     });
@@ -142,16 +146,20 @@ void main() {
         expect(
             points.map((p) => grid.gridToWorldSpace(p)),
             matchPoints([
-              grid.zero,
-              grid.zero + Point(grid.tileWidth, 0),
-              grid.zero + Point(1.5 * grid.tileWidth, grid.tileHeight),
-              grid.zero + Point(0.5 * grid.tileWidth, grid.tileHeight),
-              grid.zero + Point(-0.25 * grid.tileWidth, -1.5 * grid.tileHeight),
+              grid.zero + Point(0.25 * grid.tileWidth, 0),
+              grid.zero + Point(1.25 * grid.tileWidth, 0),
+              grid.zero + Point(1.25 * grid.tileWidth, grid.tileHeight),
+              grid.zero + Point(0.25 * grid.tileWidth, grid.tileHeight),
+              grid.zero + Point(0.5 * grid.tileWidth, 0.5 * grid.tileHeight),
+              grid.zero + Point(-0.5 * grid.tileWidth, -1.5 * grid.tileHeight),
             ]));
       });
     });
   });
 }
+
+Matcher closeTo(double v, {double maxDistance = 0.001}) => isA<num>()
+    .having((x) => (x - v).abs(), 'Error', lessThanOrEqualTo(maxDistance));
 
 Matcher matchPoints(List<Point> points) {
   return equals(points.map((p) => matchPoint(p)).toList());
