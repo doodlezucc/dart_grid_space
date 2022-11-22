@@ -137,6 +137,18 @@ void main() {
         expect(unitGrid.worldToTile(Point(1, h * 0.3)), Point(0, 0));
         expect(unitGrid.worldToTile(Point(1, h * 0.7)), Point(0, 0));
         expect(unitGrid.worldToTile(Point(1, h * 0.8)), Point(1, 0));
+
+        final y = 0.01;
+        expect(unitGrid.worldToTile(Point(0.1, y)), Point(-1, -1));
+        expect(unitGrid.worldToTile(Point(0.2, y)), Point(0, 0));
+        expect(unitGrid.worldToTile(Point(0.8, y)), Point(0, 0));
+        expect(unitGrid.worldToTile(Point(0.9, y)), Point(1, -1));
+        expect(unitGrid.worldToTile(Point(1.0, y)), Point(1, -1));
+        expect(unitGrid.worldToTile(Point(1.1, y)), Point(1, -1));
+        expect(unitGrid.worldToTile(Point(1.9, y)), Point(1, -1));
+        expect(unitGrid.worldToTile(Point(2.0, y)), Point(1, -1));
+        expect(unitGrid.worldToTile(Point(2.1, y)), Point(1, -1));
+        expect(unitGrid.worldToTile(Point(2.2, y)), Point(2, 0));
       });
 
       test('Snap to Intersection', () {
@@ -210,6 +222,18 @@ void main() {
         expect(unitGrid.worldToTile(Point(0.3, h)), Point(0, 0));
         expect(unitGrid.worldToTile(Point(0.7, h)), Point(0, 0));
         expect(unitGrid.worldToTile(Point(0.8, h)), Point(0, 1));
+
+        final x = 0.01;
+        expect(unitGrid.worldToTile(Point(x, h * 0.1)), Point(-1, -1));
+        expect(unitGrid.worldToTile(Point(x, h * 0.2)), Point(0, 0));
+        expect(unitGrid.worldToTile(Point(x, h * 0.8)), Point(0, 0));
+        expect(unitGrid.worldToTile(Point(x, h * 0.9)), Point(-1, 1));
+        expect(unitGrid.worldToTile(Point(x, h * 1.0)), Point(-1, 1));
+        expect(unitGrid.worldToTile(Point(x, h * 1.1)), Point(-1, 1));
+        expect(unitGrid.worldToTile(Point(x, h * 1.9)), Point(-1, 1));
+        expect(unitGrid.worldToTile(Point(x, h * 2.0)), Point(-1, 1));
+        expect(unitGrid.worldToTile(Point(x, h * 2.1)), Point(-1, 1));
+        expect(unitGrid.worldToTile(Point(x, h * 2.2)), Point(0, 2));
       });
 
       test('Snap to Intersection', () {

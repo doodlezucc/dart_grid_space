@@ -74,7 +74,7 @@ class HexagonalGrid<U extends num> extends TiledGrid<U> {
     ));
     final shModPeriod = (gridPoint.shift + _oneSixth) % 2.0;
     final shMod = shModPeriod % 1.0;
-    var sh = gridPoint.shift.floor();
+    var sh = (gridPoint.shift + _oneSixth).floor();
 
     if (shMod < _oneThird) {
       var off = hexOffset(gridPoint.shift);
