@@ -32,12 +32,26 @@ class HexagonalGrid<U extends num> extends TiledGrid<U> {
     Point<U>? size,
   }) : super(tilesInRow, zero: zero, size: size);
 
+  ShiftPoint<T> _toShift<T extends num>(Point<T> p) {
+    return ShiftPoint(_pShift(p), _pBase(p));
+  }
+
+  Point<T> _fromShift<T extends num>(ShiftPoint<T> p) {
+    return Point(horizontal ? p.shift : p.base, horizontal ? p.base : p.shift);
+  }
+
+  T _pShift<T extends num>(Point<T> p) {
+    return horizontal ? p.x : p.y;
+  }
+
+  T _pBase<T extends num>(Point<T> p) {
+    return horizontal ? p.y : p.x;
+  }
+
   @override
   Point<double> gridToWorldSpace(Point<num> gridPos) {
     var p = gridPos.cast<double>();
-    p += horizontal
-        ? Point(0, hexOffset(gridPos.x))
-        : Point(hexOffset(gridPos.y), 0);
+    p += _fromShift(ShiftPoint(0, hexOffset(_pShift(gridPos))));
 
     return zero.cast<double>() + Point(p.x * tileWidth, p.y * tileHeight);
   }
@@ -48,35 +62,35 @@ class HexagonalGrid<U extends num> extends TiledGrid<U> {
       (worldPos.x - zero.x) / tileWidth,
       (worldPos.y - zero.y) / tileHeight,
     );
-    gp -= horizontal ? Point(0, hexOffset(gp.x)) : Point(hexOffset(gp.y), 0);
+    gp -= _fromShift(ShiftPoint(0, hexOffset(_pShift(gp))));
     return gp;
   }
 
   @override
   Point<int> worldToTile(Point<num> worldPos) {
-    final gridPoint = Point(
+    final gridPoint = _toShift(Point(
       (worldPos.x - zero.x) / tileWidth,
       (worldPos.y - zero.y) / tileHeight,
-    );
-    final xModPeriod = (gridPoint.x + _oneSixth) % 2.0;
-    final xMod = xModPeriod % 1.0;
-    var x = gridPoint.x.floor();
+    ));
+    final shModPeriod = (gridPoint.shift + _oneSixth) % 2.0;
+    final shMod = shModPeriod % 1.0;
+    var sh = gridPoint.shift.floor();
 
-    if (xMod < _oneThird) {
-      var shift = hexOffset(gridPoint.x);
-      var yMod = gridPoint.y % 1.0;
+    if (shMod < _oneThird) {
+      var off = hexOffset(gridPoint.shift);
+      var bMod = gridPoint.base % 1.0;
 
-      if (yMod > 0.5) {
-        yMod = 1 - yMod;
+      if (bMod > 0.5) {
+        bMod = 1 - bMod;
       }
 
-      if (yMod < shift == xModPeriod < 1) {
-        x -= 1;
+      if (bMod < off == shModPeriod < 1) {
+        sh -= 1;
       }
     }
 
-    var y = (gridPoint.y - hexOffset(gridPoint.x)).floor();
-    return Point(x, y);
+    var b = (gridPoint.base - hexOffset(gridPoint.shift)).floor();
+    return _fromShift(ShiftPoint(sh, b));
   }
 
   @override
@@ -86,28 +100,45 @@ class HexagonalGrid<U extends num> extends TiledGrid<U> {
     final center = gridToWorldSpace(tile.cast<double>() + Point(0.5, 0.5));
     final vector = worldPosD - center;
     var angle = atan2(vector.y, vector.x) + pi;
+    if (!horizontal) {
+      angle = pi * 15 / 6 - angle;
+    }
+
     var angleFixed = (angle * 3 / pi).round() % 6;
 
-    switch (angleFixed) {
+    var off = _fromShift(_angleToOffset(angleFixed));
+    var scaled = Point(off.x * tileWidth, off.y * tileHeight);
+    return center + scaled;
+  }
+
+  ShiftPoint<double> _angleToOffset(int angle) {
+    switch (angle) {
       case 0:
-        return center + Point(-2 * _oneThird, 0);
+        return ShiftPoint(-2 * _oneThird, 0);
       case 1:
-        return center + Point(-_oneThird, -0.5 * tileHeight);
+        return ShiftPoint(-_oneThird, -0.5);
       case 2:
-        return center + Point(_oneThird, -0.5 * tileHeight);
+        return ShiftPoint(_oneThird, -0.5);
       case 3:
-        return center + Point(2 * _oneThird, 0);
+        return ShiftPoint(2 * _oneThird, 0);
       case 4:
-        return center + Point(_oneThird, 0.5 * tileHeight);
+        return ShiftPoint(_oneThird, 0.5);
       case 5:
-        return center + Point(-_oneThird, 0.5 * tileHeight);
+        return ShiftPoint(-_oneThird, 0.5);
     }
-    throw RangeError.range(angleFixed, 0, 5);
+    throw RangeError.range(angle, 0, 5);
   }
 
   @override
   Tile get tileShape =>
       horizontal ? HexagonTile.horizontal : HexagonTile.vertical;
+}
+
+class ShiftPoint<U extends num> {
+  final U shift;
+  final U base;
+
+  ShiftPoint(this.shift, this.base);
 }
 
 class HexagonTile extends Tile {
