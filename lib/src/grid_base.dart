@@ -35,10 +35,6 @@ abstract class Grid<U extends num> {
 
   Point gridToWorldSpace(Point gridPos);
   Point worldToGridSpace(Point worldPos);
-
-  Point<int> worldToGridSpaceSnapped(Point worldPos) {
-    return worldToGridSpace(worldPos).round();
-  }
 }
 
 abstract class TiledGrid<U extends num> extends Grid<U> {
@@ -53,6 +49,9 @@ abstract class TiledGrid<U extends num> extends Grid<U> {
     Point<U>? zero,
     Point<U>? size,
   }) : super(zero: zero, size: size);
+
+  Point<int> worldToTile(Point<num> worldPos);
+  Point<num> snapToIntersection(Point<num> worldPos);
 }
 
 abstract class Tile {
@@ -76,5 +75,13 @@ extension PointExtension<P extends num> on Point<P> {
 
   Point<int> round() {
     return Point(x.round(), y.round());
+  }
+
+  Point<int> floor() {
+    return Point(x.floor(), y.floor());
+  }
+
+  Point<double> floorToDouble() {
+    return Point(x.floorToDouble(), y.floorToDouble());
   }
 }

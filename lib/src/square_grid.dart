@@ -18,6 +18,16 @@ class SquareGrid<U extends num> extends TiledGrid<U> {
 
   @override
   Tile get tileShape => const SquareTile();
+
+  @override
+  Point<int> worldToTile(Point<num> worldPos) {
+    return worldToGridSpace(worldPos).floor();
+  }
+
+  @override
+  Point<num> snapToIntersection(Point<num> worldPos) {
+    return gridToWorldSpace(worldToGridSpace(worldPos).round());
+  }
 }
 
 class SquareTile extends Tile {

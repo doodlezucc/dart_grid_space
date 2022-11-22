@@ -44,12 +44,65 @@ class HexagonalGrid<U extends num> extends TiledGrid<U> {
 
   @override
   Point<double> worldToGridSpace(Point<num> worldPos) {
-    var sq = Point(
+    var gp = Point(
       (worldPos.x - zero.x) / tileWidth,
       (worldPos.y - zero.y) / tileHeight,
     );
-    sq -= horizontal ? Point(0, hexOffset(sq.x)) : Point(hexOffset(sq.y), 0);
-    return sq;
+    gp -= horizontal ? Point(0, hexOffset(gp.x)) : Point(hexOffset(gp.y), 0);
+    return gp;
+  }
+
+  @override
+  Point<int> worldToTile(Point<num> worldPos) {
+    final gridPoint = Point(
+      (worldPos.x - zero.x) / tileWidth,
+      (worldPos.y - zero.y) / tileHeight,
+    );
+    final xModPeriod = (gridPoint.x + _oneSixth) % 2.0;
+    final xMod = xModPeriod % 1.0;
+    var x = gridPoint.x.floor();
+
+    if (xMod < _oneThird) {
+      var shift = hexOffset(gridPoint.x);
+      var yMod = gridPoint.y % 1.0;
+
+      if (yMod > 0.5) {
+        yMod = 1 - yMod;
+      }
+
+      if (yMod < shift == xModPeriod < 1) {
+        x -= 1;
+      }
+    }
+
+    var y = (gridPoint.y - hexOffset(gridPoint.x)).floor();
+    return Point(x, y);
+  }
+
+  @override
+  Point<num> snapToIntersection(Point<num> worldPos) {
+    final worldPosD = worldPos.cast<double>();
+    final tile = worldToTile(worldPos);
+    final center = gridToWorldSpace(tile.cast<double>() + Point(0.5, 0.5));
+    final vector = worldPosD - center;
+    var angle = atan2(vector.y, vector.x) + pi;
+    var angleFixed = (angle * 3 / pi).round() % 6;
+
+    switch (angleFixed) {
+      case 0:
+        return center + Point(-2 * _oneThird, 0);
+      case 1:
+        return center + Point(-_oneThird, -0.5 * tileHeight);
+      case 2:
+        return center + Point(_oneThird, -0.5 * tileHeight);
+      case 3:
+        return center + Point(2 * _oneThird, 0);
+      case 4:
+        return center + Point(_oneThird, 0.5 * tileHeight);
+      case 5:
+        return center + Point(-_oneThird, 0.5 * tileHeight);
+    }
+    throw RangeError.range(angleFixed, 0, 5);
   }
 
   @override

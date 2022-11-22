@@ -123,6 +123,47 @@ void main() {
               grid.zero + Point(-0.5 * grid.tileWidth, -grid.tileHeight),
             ]));
       });
+
+      final unitGrid = Grid.hexagonal<double>(1, horizontal: true);
+      final h = unitGrid.tileHeight;
+
+      test('Snap to Tile', () {
+        expect(unitGrid.worldToTile(Point(0.5, h * 0.5)), Point(0, 0));
+        expect(unitGrid.worldToTile(Point(0, 0)), Point(-1, -1));
+        expect(unitGrid.worldToTile(Point(1, 0)), Point(1, -1));
+        expect(unitGrid.worldToTile(Point(1, h)), Point(1, 0));
+
+        expect(unitGrid.worldToTile(Point(1, h * 0.25)), Point(1, -1));
+        expect(unitGrid.worldToTile(Point(1, h * 0.5)), Point(0, 0));
+        expect(unitGrid.worldToTile(Point(1, h * 0.75)), Point(1, 0));
+      });
+
+      test('Snap to Intersection', () {
+        expect(
+          unitGrid.snapToIntersection(Point(0.3, h * 0.2)),
+          matchPoint(Point(1 / 6, 0)),
+        );
+        expect(
+          unitGrid.snapToIntersection(Point(0.7, h * 0.2)),
+          matchPoint(Point(5 / 6, 0)),
+        );
+        expect(
+          unitGrid.snapToIntersection(Point(1, h * 0.5)),
+          matchPoint(Point(7 / 6, h * 0.5)),
+        );
+        expect(
+          unitGrid.snapToIntersection(Point(1, h)),
+          matchPoint(Point(5 / 6, h)),
+        );
+        expect(
+          unitGrid.snapToIntersection(Point(0, h)),
+          matchPoint(Point(1 / 6, h)),
+        );
+        expect(
+          unitGrid.snapToIntersection(Point(1.7, h * 2.4)),
+          matchPoint(Point(11 / 6, h * 2.5)),
+        );
+      });
     });
 
     group('Vertical', () {
