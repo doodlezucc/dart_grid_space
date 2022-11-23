@@ -33,8 +33,8 @@ abstract class Grid<U extends num> {
   }) =>
       HexagonalGrid(tilesInRow, horizontal: horizontal, zero: zero, size: size);
 
-  Point gridToWorldSpace(Point gridPos);
-  Point worldToGridSpace(Point worldPos);
+  Point<double> gridToWorldSpace(Point gridPos);
+  Point<double> worldToGridSpace(Point worldPos);
 }
 
 abstract class TiledGrid<U extends num> extends Grid<U> {
@@ -49,6 +49,16 @@ abstract class TiledGrid<U extends num> extends Grid<U> {
     Point<U>? zero,
     Point<U>? size,
   }) : super(zero: zero, size: size);
+
+  @override
+  Point<double> gridToWorldSpace(Point gridPos) {
+    return zero.cast<double>() + gridPos.cast<double>() * tileWidth;
+  }
+
+  @override
+  Point<double> worldToGridSpace(Point worldPos) {
+    return (worldPos.cast<double>() - zero.cast<double>()) * (1 / tileWidth);
+  }
 
   Point<int> worldToTile(Point<num> worldPos);
   Point<num> snapToIntersection(Point<num> worldPos);

@@ -48,22 +48,12 @@ class HexagonalGrid<U extends num> extends TiledGrid<U> {
     return horizontal ? p.y : p.x;
   }
 
-  @override
-  Point<double> gridToWorldSpace(Point<num> gridPos) {
-    var p = gridPos.cast<double>();
-    p += _fromShift(ShiftPoint(0, hexOffset(_pShift(gridPos))));
+  Point<double> _gridToShiftedWorldSpace(Point<num> gridPos) {
+    final sh = _pShift(gridPos);
+    final b = _pBase(gridPos) + hexOffset(sh);
 
+    final p = _fromShift(ShiftPoint(sh, b));
     return zero.cast<double>() + Point(p.x * tileWidth, p.y * tileHeight);
-  }
-
-  @override
-  Point<double> worldToGridSpace(Point<num> worldPos) {
-    var gp = Point(
-      (worldPos.x - zero.x) / tileWidth,
-      (worldPos.y - zero.y) / tileHeight,
-    );
-    gp -= _fromShift(ShiftPoint(0, hexOffset(_pShift(gp))));
-    return gp;
   }
 
   @override
@@ -97,7 +87,8 @@ class HexagonalGrid<U extends num> extends TiledGrid<U> {
   Point<num> snapToIntersection(Point<num> worldPos) {
     final worldPosD = worldPos.cast<double>();
     final tile = worldToTile(worldPos);
-    final center = gridToWorldSpace(tile.cast<double>() + Point(0.5, 0.5));
+    final center =
+        _gridToShiftedWorldSpace(tile.cast<double>() + Point(0.5, 0.5));
     final vector = worldPosD - center;
     var angle = atan2(vector.y, vector.x) + pi;
     if (!horizontal) {

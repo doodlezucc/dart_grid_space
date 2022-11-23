@@ -111,19 +111,6 @@ void main() {
         }
       });
 
-      test('Transform', () {
-        expect(
-            points.map((p) => grid.gridToWorldSpace(p)),
-            matchPoints([
-              grid.zero + Point(0, 0.25 * grid.tileHeight),
-              grid.zero + Point(grid.tileWidth, 0.25 * grid.tileHeight),
-              grid.zero + Point(grid.tileWidth, 1.25 * grid.tileHeight),
-              grid.zero + Point(0, 1.25 * grid.tileHeight),
-              grid.zero + Point(0.5 * grid.tileWidth, 0.5 * grid.tileHeight),
-              grid.zero + Point(-0.5 * grid.tileWidth, -grid.tileHeight),
-            ]));
-      });
-
       final unitGrid = Grid.hexagonal<double>(1, horizontal: true);
       final h = unitGrid.tileHeight;
 
@@ -194,19 +181,6 @@ void main() {
           expect(
               grid.gridToWorldSpace(grid.worldToGridSpace(p)), matchPoint(p));
         }
-      });
-
-      test('Transform', () {
-        expect(
-            points.map((p) => grid.gridToWorldSpace(p)),
-            matchPoints([
-              grid.zero + Point(0.25 * grid.tileWidth, 0),
-              grid.zero + Point(1.25 * grid.tileWidth, 0),
-              grid.zero + Point(1.25 * grid.tileWidth, grid.tileHeight),
-              grid.zero + Point(0.25 * grid.tileWidth, grid.tileHeight),
-              grid.zero + Point(0.5 * grid.tileWidth, 0.5 * grid.tileHeight),
-              grid.zero + Point(-0.5 * grid.tileWidth, -1.5 * grid.tileHeight),
-            ]));
       });
 
       final unitGrid = Grid.hexagonal<double>(1, horizontal: false);
