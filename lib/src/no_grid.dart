@@ -16,4 +16,9 @@ class UnclampedGrid<U extends num> extends Grid<U> {
   Point<double> worldToGridSpace(Point worldPos) {
     return (worldPos.cast<double>() - zero.cast<double>()) * (1 / scale);
   }
+
+  @override
+  Point<double> snapCenteredShape(Point<double> center, int size) {
+    return center;
+  }
 }
