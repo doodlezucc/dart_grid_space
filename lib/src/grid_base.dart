@@ -54,7 +54,7 @@ abstract class TiledGrid<U extends num> extends Grid<U> {
   @override
   Point<num> snapCenteredShape(Point<double> center, int size) {
     if (size % 2 == 1) {
-      return tileCenterInWorld(worldToTile(center));
+      return tileCenterInGrid(worldToTile(center));
     } else {
       return snapToIntersection(center);
     }
@@ -72,7 +72,11 @@ abstract class TiledGrid<U extends num> extends Grid<U> {
     return Point(off.x / tileWidth, off.y / tileHeight);
   }
 
-  Point<double> tileCenterInWorld(Point<int> tile);
+  Point<double> tileCenterInWorld(Point<int> tile) {
+    return gridToWorldSpace(tileCenterInGrid(tile));
+  }
+
+  Point<double> tileCenterInGrid(Point<int> tile);
   Point<int> worldToTile(Point<num> worldPos);
   Point<num> snapToIntersection(Point<num> worldPos);
 }

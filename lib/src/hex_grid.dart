@@ -49,14 +49,14 @@ class HexagonalGrid<U extends num> extends TiledGrid<U> {
   }
 
   @override
-  Point<double> tileCenterInWorld(Point<int> tile) {
+  Point<double> tileCenterInGrid(Point<int> tile) {
     final sh = _pShift(tile);
     final off = _fromShift(ShiftPoint(
       0.5,
       sh % 2 == 1 ? 1.0 : 0.5,
     ));
 
-    return gridToWorldSpace(tile.cast<double>() + off);
+    return tile.cast<double>() + off;
   }
 
   @override

@@ -20,8 +20,8 @@ class SquareGrid<U extends num> extends TiledGrid<U> {
   }
 
   @override
-  Point<double> tileCenterInWorld(Point<int> tile) {
-    return gridToWorldSpace(tile.cast<double>() + Point(0.5, 0.5));
+  Point<double> tileCenterInGrid(Point<int> tile) {
+    return tile.cast<double>() + Point(0.5, 0.5);
   }
 }
 

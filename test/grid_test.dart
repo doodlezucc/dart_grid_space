@@ -120,25 +120,25 @@ void main() {
 
       test('Tile Center', () {
         expect(
-          grid.tileCenterInWorld(Point(0, 0)),
-          grid.zero + Point(0.5 * grid.tileWidth, 0.5 * grid.tileHeight),
+          grid.tileCenterInGrid(Point(0, 0)),
+          Point(0.5, 0.5),
         );
         expect(
-          grid.tileCenterInWorld(Point(0, 1)),
-          grid.zero + Point(0.5 * grid.tileWidth, 1.5 * grid.tileHeight),
+          grid.tileCenterInGrid(Point(0, 1)),
+          Point(0.5, 1.5),
         );
         expect(
-          grid.tileCenterInWorld(Point(1, 0)),
-          grid.zero + Point(1.5 * grid.tileWidth, 1.0 * grid.tileHeight),
+          grid.tileCenterInGrid(Point(1, 0)),
+          Point(1.5, 1.0),
         );
         expect(
-          grid.tileCenterInWorld(Point(1, 1)),
-          grid.zero + Point(1.5 * grid.tileWidth, 2.0 * grid.tileHeight),
+          grid.tileCenterInGrid(Point(1, 1)),
+          Point(1.5, 2.0),
         );
 
         expect(
-          grid.tileCenterInWorld(Point(3, 3)),
-          grid.zero + Point(3.5 * grid.tileWidth, 4.0 * grid.tileHeight),
+          grid.tileCenterInGrid(Point(3, 3)),
+          Point(3.5, 4.0),
         );
       });
 
@@ -216,25 +216,25 @@ void main() {
 
       test('Tile Center', () {
         expect(
-          grid.tileCenterInWorld(Point(0, 0)),
-          grid.zero + Point(0.5 * grid.tileWidth, 0.5 * grid.tileHeight),
+          grid.tileCenterInGrid(Point(0, 0)),
+          Point(0.5, 0.5),
         );
         expect(
-          grid.tileCenterInWorld(Point(0, 1)),
-          grid.zero + Point(1.0 * grid.tileWidth, 1.5 * grid.tileHeight),
+          grid.tileCenterInGrid(Point(0, 1)),
+          Point(1.0, 1.5),
         );
         expect(
-          grid.tileCenterInWorld(Point(1, 0)),
-          grid.zero + Point(1.5 * grid.tileWidth, 0.5 * grid.tileHeight),
+          grid.tileCenterInGrid(Point(1, 0)),
+          Point(1.5, 0.5),
         );
         expect(
-          grid.tileCenterInWorld(Point(1, 1)),
-          grid.zero + Point(2.0 * grid.tileWidth, 1.5 * grid.tileHeight),
+          grid.tileCenterInGrid(Point(1, 1)),
+          Point(2.0, 1.5),
         );
 
         expect(
-          grid.tileCenterInWorld(Point(3, 3)),
-          grid.zero + Point(4.0 * grid.tileWidth, 3.5 * grid.tileHeight),
+          grid.tileCenterInGrid(Point(3, 3)),
+          Point(4.0, 3.5),
         );
       });
 
