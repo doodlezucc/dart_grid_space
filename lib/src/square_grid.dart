@@ -18,6 +18,11 @@ class SquareGrid<U extends num> extends TiledGrid<U> {
   Point<num> snapToIntersection(Point<num> worldPos) {
     return gridToWorldSpace(worldToGridSpace(worldPos).round());
   }
+
+  @override
+  Point<double> tileCenterInWorld(Point<int> tile) {
+    return gridToWorldSpace(tile.cast<double>() + Point(0.5, 0.5));
+  }
 }
 
 class SquareTile extends Tile {

@@ -82,6 +82,13 @@ void main() {
             grid.zero + Point(-0.5 * grid.tileWidth, -1.5 * grid.tileHeight),
           ]));
     });
+
+    test('Tile Center', () {
+      expect(
+        grid.tileCenterInWorld(Point(2, 1)),
+        grid.zero + Point(2.5 * grid.tileWidth, 1.5 * grid.tileHeight),
+      );
+    });
   });
 
   group('Hexagon', () {
@@ -111,10 +118,34 @@ void main() {
         }
       });
 
+      test('Tile Center', () {
+        expect(
+          grid.tileCenterInWorld(Point(0, 0)),
+          grid.zero + Point(0.5 * grid.tileWidth, 0.5 * grid.tileHeight),
+        );
+        expect(
+          grid.tileCenterInWorld(Point(0, 1)),
+          grid.zero + Point(0.5 * grid.tileWidth, 1.5 * grid.tileHeight),
+        );
+        expect(
+          grid.tileCenterInWorld(Point(1, 0)),
+          grid.zero + Point(1.5 * grid.tileWidth, 1.0 * grid.tileHeight),
+        );
+        expect(
+          grid.tileCenterInWorld(Point(1, 1)),
+          grid.zero + Point(1.5 * grid.tileWidth, 2.0 * grid.tileHeight),
+        );
+
+        expect(
+          grid.tileCenterInWorld(Point(3, 3)),
+          grid.zero + Point(3.5 * grid.tileWidth, 4.0 * grid.tileHeight),
+        );
+      });
+
       final unitGrid = Grid.hexagonal<double>(1, horizontal: true);
       final h = unitGrid.tileHeight;
 
-      test('Snap to Tile', () {
+      test('World to Tile', () {
         expect(unitGrid.worldToTile(Point(0.5, h * 0.5)), Point(0, 0));
         expect(unitGrid.worldToTile(Point(0, 0)), Point(-1, -1));
         expect(unitGrid.worldToTile(Point(1, 0)), Point(1, -1));
@@ -181,6 +212,30 @@ void main() {
           expect(
               grid.gridToWorldSpace(grid.worldToGridSpace(p)), matchPoint(p));
         }
+      });
+
+      test('Tile Center', () {
+        expect(
+          grid.tileCenterInWorld(Point(0, 0)),
+          grid.zero + Point(0.5 * grid.tileWidth, 0.5 * grid.tileHeight),
+        );
+        expect(
+          grid.tileCenterInWorld(Point(0, 1)),
+          grid.zero + Point(1.0 * grid.tileWidth, 1.5 * grid.tileHeight),
+        );
+        expect(
+          grid.tileCenterInWorld(Point(1, 0)),
+          grid.zero + Point(1.5 * grid.tileWidth, 0.5 * grid.tileHeight),
+        );
+        expect(
+          grid.tileCenterInWorld(Point(1, 1)),
+          grid.zero + Point(2.0 * grid.tileWidth, 1.5 * grid.tileHeight),
+        );
+
+        expect(
+          grid.tileCenterInWorld(Point(3, 3)),
+          grid.zero + Point(4.0 * grid.tileWidth, 3.5 * grid.tileHeight),
+        );
       });
 
       final unitGrid = Grid.hexagonal<double>(1, horizontal: false);

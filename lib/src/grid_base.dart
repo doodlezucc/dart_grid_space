@@ -52,14 +52,17 @@ abstract class TiledGrid<U extends num> extends Grid<U> {
 
   @override
   Point<double> gridToWorldSpace(Point gridPos) {
-    return zero.cast<double>() + gridPos.cast<double>() * tileWidth;
+    return zero.cast<double>() +
+        Point(gridPos.x * tileWidth, gridPos.y * tileHeight);
   }
 
   @override
   Point<double> worldToGridSpace(Point worldPos) {
-    return (worldPos.cast<double>() - zero.cast<double>()) * (1 / tileWidth);
+    final off = (worldPos.cast<double>() - zero.cast<double>());
+    return Point(off.x / tileWidth, off.y / tileHeight);
   }
 
+  Point<double> tileCenterInWorld(Point<int> tile);
   Point<int> worldToTile(Point<num> worldPos);
   Point<num> snapToIntersection(Point<num> worldPos);
 }
