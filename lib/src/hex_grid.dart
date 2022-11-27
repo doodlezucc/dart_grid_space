@@ -5,9 +5,9 @@ import 'grid_base.dart';
 const _oneThird = 0.33333333333333333333; // 1 / 3
 const _oneSixth = _oneThird / 2; // 1 / 6
 const _invSqrt3 = 0.57735026918962576450; // 1 / √3
-const _halfInv3 = _invSqrt3 / 2; // 1/(2*√3)
 const _vertDisH = _invSqrt3 * 2;
 const _vertDisV = 0.86602540378443864676; // √3 / 2
+const _twlvSqt3 = _vertDisV / 6; // √3 / 12
 
 /// A hexagon outline wave function spanning a period of 2 units.
 double hexOffset(num x) {
@@ -146,12 +146,12 @@ class HexagonTile extends Tile {
                 Point(0.5 - 2 * _oneThird, _invSqrt3),
               ]
             : const [
-                Point(1, 0.5 - _halfInv3),
-                Point(1, 0.5 + _halfInv3),
-                Point(0.5, 0.5 + 2 * _halfInv3),
-                Point(0, 0.5 + _halfInv3),
-                Point(0, 0.5 - _halfInv3),
-                Point(0.5, 0.5 - 2 * _halfInv3),
+                Point(1, _twlvSqt3),
+                Point(1, 5 * _twlvSqt3),
+                Point(0.5, 7 * _twlvSqt3),
+                Point(0, 5 * _twlvSqt3),
+                Point(0, _twlvSqt3),
+                Point(0.5, -_twlvSqt3),
               ]);
 
   static const horizontal = HexagonTile._(true);
