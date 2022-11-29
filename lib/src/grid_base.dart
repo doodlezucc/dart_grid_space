@@ -33,7 +33,8 @@ abstract class Grid<U extends num> {
   }) =>
       HexagonalGrid(tilesInRow, horizontal: horizontal, zero: zero, size: size);
 
-  Point<num> snapCenteredShape(Point<double> center, int size);
+  Point<num> gridSnapCentered(Point<double> center, int size);
+  Point<num> worldSnapCentered(Point<double> center, int size);
   Point<double> gridToWorldSpace(Point gridPos);
   Point<double> worldToGridSpace(Point worldPos);
 }
@@ -52,9 +53,18 @@ abstract class TiledGrid<U extends num> extends Grid<U> {
   }) : super(zero: zero, size: size);
 
   @override
-  Point<num> snapCenteredShape(Point<double> center, int size) {
+  Point<num> gridSnapCentered(Point<double> center, int size) {
     if (size % 2 == 1) {
-      return tileCenterInGrid(worldToTile(center));
+      return tileCenterInGrid(worldToTile(gridToWorldSpace(center)));
+    } else {
+      return worldToGridSpace(snapToIntersection(gridToWorldSpace(center)));
+    }
+  }
+
+  @override
+  Point<num> worldSnapCentered(Point<double> center, int size) {
+    if (size % 2 == 1) {
+      return tileCenterInWorld(worldToTile(center));
     } else {
       return snapToIntersection(center);
     }
