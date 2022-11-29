@@ -18,12 +18,12 @@ class UnclampedGrid<U extends num> extends Grid<U> {
   }
 
   @override
-  Point<num> gridSnapCentered(Point<double> center, int size) {
+  Point gridSnapCentered(Point center, int size) {
     return center;
   }
 
   @override
-  Point<double> worldSnapCentered(Point<double> center, int size) {
+  Point worldSnapCentered(Point center, int size) {
     return center;
   }
 }
