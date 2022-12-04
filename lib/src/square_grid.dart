@@ -3,6 +3,9 @@ import 'dart:math';
 import 'grid_base.dart';
 
 class SquareGrid<U extends num> extends TiledGrid<U> {
+  @override
+  double get tileHeightRatio => 1;
+
   SquareGrid(int tilesInRow, {Point<U>? zero, Point<U>? size})
       : super(tilesInRow, zero: zero, size: size);
 

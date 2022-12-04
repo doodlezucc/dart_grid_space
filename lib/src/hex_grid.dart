@@ -23,7 +23,7 @@ class HexagonalGrid<U extends num> extends TiledGrid<U> {
   bool horizontal;
 
   @override
-  double get tileHeight => tileWidth * (horizontal ? _vertDisH : _vertDisV);
+  double get tileHeightRatio => horizontal ? _vertDisH : _vertDisV;
 
   HexagonalGrid(
     int tilesInRow, {

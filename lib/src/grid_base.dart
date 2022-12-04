@@ -42,8 +42,9 @@ abstract class Grid<U extends num> {
 abstract class TiledGrid<U extends num> extends Grid<U> {
   int tilesInRow;
   double get tileWidth => size.x / tilesInRow;
-  double get tileHeight => tileWidth;
+  double get tileHeight => tileWidth * tileHeightRatio;
 
+  double get tileHeightRatio;
   Tile get tileShape;
 
   TiledGrid(
