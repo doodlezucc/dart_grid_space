@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'grid_base.dart';
 
-const _oneThird = 0.33333333333333333333; // 1 / 3
-const _oneSixth = _oneThird / 2; // 1 / 6
+const _oneThird = 1 / 3;
+const _oneSixth = 1 / 6;
 const _invSqrt3 = 0.57735026918962576450; // 1 / √3
 const _vertDisH = _invSqrt3 * 2;
 const _vertDisV = 0.86602540378443864676; // √3 / 2
@@ -24,6 +24,7 @@ class HexagonalGrid<U extends num> extends TiledGrid<U> {
 
   @override
   double get tileHeightRatio => horizontal ? _vertDisH : _vertDisV;
+  double get edgeLength => horizontal ? 2 / 3 : _invSqrt3;
 
   HexagonalGrid(
     int tilesInRow, {
