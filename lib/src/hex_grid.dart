@@ -24,7 +24,8 @@ class HexagonalGrid<U extends num> extends TiledGrid<U> {
 
   @override
   double get tileHeightRatio => horizontal ? _vertDisH : _vertDisV;
-  double get edgeLength => horizontal ? 2 / 3 : _invSqrt3;
+
+  double get tileDistance => 2 * tileShape.innerRadius;
 
   HexagonalGrid(
     int tilesInRow, {
@@ -124,7 +125,7 @@ class HexagonalGrid<U extends num> extends TiledGrid<U> {
   }
 
   @override
-  Tile get tileShape =>
+  HexagonTile get tileShape =>
       horizontal ? HexagonTile.horizontal : HexagonTile.vertical;
 }
 
@@ -136,25 +137,42 @@ class ShiftPoint<U extends num> {
 }
 
 class HexagonTile extends Tile {
-  const HexagonTile._(bool horizontal)
-      : super(horizontal
-            ? const [
-                Point(0.5 - _oneThird, 2 * _invSqrt3),
-                Point(0.5 + _oneThird, 2 * _invSqrt3),
-                Point(0.5 + 2 * _oneThird, _invSqrt3),
-                Point(0.5 + _oneThird, 0),
-                Point(0.5 - _oneThird, 0),
-                Point(0.5 - 2 * _oneThird, _invSqrt3),
-              ]
-            : const [
-                Point(1, _twlvSqt3),
-                Point(1, 5 * _twlvSqt3),
-                Point(0.5, 7 * _twlvSqt3),
-                Point(0, 5 * _twlvSqt3),
-                Point(0, _twlvSqt3),
-                Point(0.5, -_twlvSqt3),
-              ]);
+  final double heightRatio;
+  final double innerRadius;
+  final double outerRadius;
 
-  static const horizontal = HexagonTile._(true);
-  static const vertical = HexagonTile._(false);
+  const HexagonTile._(
+    List<Point> points, {
+    required this.heightRatio,
+    required this.innerRadius,
+    required this.outerRadius,
+  }) : super(points);
+
+  static const horizontal = HexagonTile._(
+    [
+      Point(0.5 - _oneThird, 2 * _invSqrt3),
+      Point(0.5 + _oneThird, 2 * _invSqrt3),
+      Point(0.5 + 2 * _oneThird, _invSqrt3),
+      Point(0.5 + _oneThird, 0),
+      Point(0.5 - _oneThird, 0),
+      Point(0.5 - 2 * _oneThird, _invSqrt3),
+    ],
+    heightRatio: _vertDisH,
+    innerRadius: _invSqrt3,
+    outerRadius: 2 / 3,
+  );
+
+  static const vertical = HexagonTile._(
+    [
+      Point(1, _twlvSqt3),
+      Point(1, 5 * _twlvSqt3),
+      Point(0.5, 7 * _twlvSqt3),
+      Point(0, 5 * _twlvSqt3),
+      Point(0, _twlvSqt3),
+      Point(0.5, -_twlvSqt3),
+    ],
+    heightRatio: _vertDisV,
+    innerRadius: 1 / 2,
+    outerRadius: _invSqrt3,
+  );
 }
