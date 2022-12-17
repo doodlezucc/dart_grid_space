@@ -150,12 +150,12 @@ class HexagonTile extends Tile {
 
   static const horizontal = HexagonTile._(
     [
-      Point(0.5 - _oneThird, 2 * _invSqrt3),
-      Point(0.5 + _oneThird, 2 * _invSqrt3),
-      Point(0.5 + 2 * _oneThird, _invSqrt3),
-      Point(0.5 + _oneThird, 0),
-      Point(0.5 - _oneThird, 0),
-      Point(0.5 - 2 * _oneThird, _invSqrt3),
+      Point(-_oneThird, _invSqrt3), // Top left corner
+      Point(_oneThird, _invSqrt3),
+      Point(2 * _oneThird, 0),
+      Point(_oneThird, -_invSqrt3),
+      Point(-_oneThird, -_invSqrt3),
+      Point(-2 * _oneThird, 0),
     ],
     heightRatio: _vertDisH,
     innerRadius: _invSqrt3,
@@ -164,12 +164,12 @@ class HexagonTile extends Tile {
 
   static const vertical = HexagonTile._(
     [
-      Point(1, _twlvSqt3),
-      Point(1, 5 * _twlvSqt3),
-      Point(0.5, 7 * _twlvSqt3),
-      Point(0, 5 * _twlvSqt3),
-      Point(0, _twlvSqt3),
-      Point(0.5, -_twlvSqt3),
+      Point(0.5, -2 * _twlvSqt3), // Top right corner
+      Point(0.5, 2 * _twlvSqt3),
+      Point(0, 4 * _twlvSqt3),
+      Point(-0.5, 2 * _twlvSqt3),
+      Point(-0.5, -2 * _twlvSqt3),
+      Point(0, -4 * _twlvSqt3),
     ],
     heightRatio: _vertDisV,
     innerRadius: 1 / 2,

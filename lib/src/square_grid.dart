@@ -31,9 +31,9 @@ class SquareGrid<U extends num> extends TiledGrid<U> {
 class SquareTile extends Tile {
   const SquareTile()
       : super(const [
-          Point(0, 0),
-          Point(1, 0),
-          Point(1, 1),
-          Point(0, 1),
+          Point(-0.5, -0.5),
+          Point(0.5, -0.5),
+          Point(0.5, 0.5),
+          Point(-0.5, 0.5),
         ]);
 }

@@ -93,6 +93,7 @@ abstract class TiledGrid<U extends num> extends Grid<U> {
 }
 
 abstract class Tile {
+  /// Points defining the shape of a tile relative to its center.
   final List<Point> points;
 
   const Tile(this.points);
