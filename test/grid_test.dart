@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:grid/grid.dart';
+import 'package:grid_space/grid_space.dart';
 import 'package:test/test.dart';
 
 void main() {

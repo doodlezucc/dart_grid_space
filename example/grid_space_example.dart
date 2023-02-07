@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:grid/grid.dart';
+import 'package:grid_space/grid_space.dart';
 
 void main() {
   final grid = Grid.hexagonal(16, horizontal: false, size: Point(16, 16));

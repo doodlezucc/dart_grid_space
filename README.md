@@ -1,4 +1,4 @@
-A lightweight Dart library to create and convert between square grids and hexagonal grids.
+Common classes to create and convert between square grids and hexagonal grids.
 
 Conversion is achieved with a bidirectional function which takes a point and transforms it using either `gridToWorldSpace( point )` or `worldToGridSpace( point )`.
 
