@@ -12,18 +12,14 @@ final grid = Grid.square(
 // Alternatives with hexagonal grid
 Grid.hexagonal(4, horizontal: true);
 Grid.hexagonal(4, horizontal: false);
-```
 
-## Illustration
-
-You can see the correlation between grid space and world space in the following figure (Square - Hex Horizontal - Hex Vertical).
-
-![Figure showing how grid space and world space correlate in square grids and horizontal or vertical hex grids](media/gridspace_worldspace.svg)
-
-```dart
 // Examples: Grid -> World space
 grid.gridToWorldSpace( Point(0.5, 0.5) ); // Blue dot in figure
 grid.gridToWorldSpace( Point(1,   2  ) ); // Green
 grid.gridToWorldSpace( Point(2.5, 1.5) ); // Pink
 grid.gridToWorldSpace( Point(1.5, 3.5) ); // Orange
 ```
+
+The following figure exemplifies the correlation between grid space and world space for each available grid type.
+![Figure showing how grid space and world space correlate in square grids and horizontal or vertical hex grids](media/gridspace_worldspace.svg)
+Transformations in a **_square_** grid, **_horizontal hex_** grid and **_vertical hex_** grid.
