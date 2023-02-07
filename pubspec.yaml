@@ -1,12 +1,10 @@
 name: grid
 description: Common classes to convert between square grids and hexagonal grids.
 version: 1.0.0
+repository: https://github.com/doodlezucc/dart_grid
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
-
-# dependencies:
-#   path: ^1.8.0
 
 dev_dependencies:
   lints: ^2.0.0
