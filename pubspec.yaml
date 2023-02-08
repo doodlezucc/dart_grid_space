@@ -1,6 +1,6 @@
 name: grid_space
 description: Common classes to convert between square grids and hexagonal grids.
-version: 1.0.0
+version: 1.0.1
 repository: https://github.com/doodlezucc/dart_grid_space
 
 environment:
